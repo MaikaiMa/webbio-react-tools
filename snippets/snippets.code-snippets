@@ -1,0 +1,351 @@
+{
+	// Import
+	"Import": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "imn",
+		"description": "Import",
+		"body": ["import ${2}, { ${3} } from '${1}';"]
+	},
+	"Import default": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "imp",
+		"description": "Import default name",
+		"body": ["import ${2} from '${1}';"]
+	},
+	"Import deconstructed": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "imd",
+		"description": "Import deconstructed",
+		"body": ["import { ${2} } from '${1}';"]
+	},
+	"Import all as alias": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "ime",
+		"description": "Import all as alias",
+		"body": ["import * as ${2} from '${1}';"]
+	},
+	"Import named as alias": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "ima",
+		"description": "Import named as alias",
+		"body": ["import { ${2} as ${3} } from '${1}';"]
+	},
+
+	// Export
+	"Export all": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "exa",
+		"description": "Export all",
+		"body": ["export * from '${1}';"]
+	},
+	"Export default": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "exp",
+		"description": "Export default",
+		"body": ["export default ${1};"]
+	},
+	"Export deconstructed": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "exd",
+		"description": "Export deconstructed",
+		"body": ["export { ${2} } from ${1};"]
+	},
+	"Export alias": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "exn",
+		"description": "Export alias",
+		"body": ["export { ${2} as ${3}} from '${1}';"]
+	},
+
+	// Basic
+	"Typescript function": {
+		"scope": "typescript,typescriptreact",
+		"prefix": "nfn",
+		"description": "Simple (typed) named function",
+		"body": ["const ${1} = (${2}): void => {", "\t${3}", "};"]
+	},
+	"Destruct object variable": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "dob",
+		"description": "Create a destructed object const",
+		"body": ["const { ${2} } = ${1};"]
+	},
+	"Destruct array variable": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "dar",
+		"description": "Create a destructed array const",
+		"body": ["const [${2}] = ${1};"]
+	},
+	"Timeout": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "sto",
+		"description": "Timeout",
+		"body": ["setTimeout(() => {", "\t${2}", "}, ${1});"]
+	},
+	"Interval": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "sti",
+		"description": "Interval",
+		"body": ["setInterval(() => {", "\t${2}", "}, ${1});"]
+	},
+	"Console log": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "cl",
+		"description": "Console log",
+		"body": ["console.log(${1:'Test'});"]
+	},
+
+	// React
+	"Import React": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "imr",
+		"description": "Import React",
+		"body": ["import React from 'react';"]
+	},
+	"Import React useRef": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "imrr",
+		"description": "Import React useState",
+		"body": ["import { useRef } from 'react';"]
+	},
+	"Import React useState": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "imrs",
+		"description": "Import React useState",
+		"body": ["import { useState } from 'react';"]
+	},
+	"Import React useEffect": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "imre",
+		"description": "Import React seEffect",
+		"body": ["import { useEffect } from 'react';"]
+	},
+	"Import useState and useEffect": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "imrse",
+		"description": "Import useState and useEffect",
+		"body": ["import { useState, useEffect } from 'react';"]
+	},
+	"Import useState, useEffect and useRef": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "imra",
+		"description": "Import useState, useEffect and useRef",
+		"body": ["import { useState, useEffect, useRef } from 'react';"]
+	},
+	"React (Typescript) functional component": {
+		"scope": "typescriptreact",
+		"prefix": "rc",
+		"description": "Simple React functional component with Typescript",
+		"body": [
+			"import { type HTMLAttributes } from 'react';",
+			"",
+			"export type ${1}Props = HTMLAttributes<${2:HTMLElement}>;",
+			"",
+			"export const ${1}: ReactComponent<${1}Props> = () => (",
+			"\t<>${3}</>",
+			");",
+			"",
+			"export default ${1};"
+		]
+	},
+	"React (Typescript) functional component with return": {
+		"scope": "typescriptreact",
+		"prefix": "rcr",
+		"description": "Simple React functional component with Typescript and a seperate return",
+		"body": [
+			"import { type HTMLAttributes } from 'react';",
+			"",
+			"export type ${1}Props = HTMLAttributes<${2:HTMLElement}>;",
+			"",
+			"export const ${1}: ReactComponent<${1}Props> = () => {",
+			"\treturn <>${3}</>;",
+			"};",
+			"",
+			"export default ${1};"
+		]
+	},
+
+	// Hooks
+	"React (Typescript) state hook": {
+		"scope": "typescriptreact",
+		"prefix": "usestate",
+		"description": "React state as const",
+		"body": [
+			"const [${1}, set${1/(.*)/${1:/capitalize}/}] = useState<$2>($3);"
+		]
+	},
+	"React (Typescript) effect hook": {
+		"scope": "javascriptreact,typescriptreact",
+		"prefix": "useeffect",
+		"description": "React effect",
+		"body": ["useEffect(() => {", "\t${2}", "}, [${1}]);"]
+	},
+	"React (Typescript) effect hook with return": {
+		"scope": "javascriptreact,typescriptreact",
+		"prefix": "ruseeffect",
+		"description": "React effect with cleanup",
+		"body": [
+			"useEffect(() => {",
+			"\t${2}",
+			"",
+			"\treturn () => {",
+			"\t\t${3}",
+			"\t}",
+			"}, [${1}]);"
+		]
+	},
+	"React (Typescript) create reference": {
+		"scope": "typescriptreact",
+		"prefix": "cref",
+		"description": "React ref as const",
+		"body": ["const ${1} = useRef<$2>($3);"]
+	},
+
+	// Redux
+	"Redux import useDispatch": {
+		"scope": "javascriptreact,typescriptreact",
+		"prefix": "impdis",
+		"description": "Redux import useDispatch",
+		"body": ["import { useDispatch } from 'react-redux';"]
+	},
+	"Redux useDispatch as const": {
+		"scope": "javascriptreact,typescriptreact",
+		"prefix": "usedispatch",
+		"description": "Redux useDispatch as const",
+		"body": ["const dispatch = useDispatch();"]
+	},
+	"Redux slice": {
+		"scope": "typescript",
+		"prefix": "rxslice",
+		"description": "Typed Redux slice template with initial state and interface",
+		"body": [
+			"import { createSlice } from '@reduxjs/toolkit';",
+			"",
+			"export interface I${1/(.*)/${1:/capitalize}/}State {};",
+			"",
+			"const initialState: I${1/(.*)/${1:/capitalize}/}State = {};",
+			"",
+			"export const slice = createSlice({",
+			"  name: '${1:${TM_FILENAME_BASE}}',",
+			"  initialState,",
+			"  reducers: {}",
+			"});",
+			"",
+			"export const {} = slice.actions;",
+			"",
+			"export default slice.reducer;"
+		]
+	},
+	"Redux const": {
+		"scope": "typescript",
+		"prefix": "rxconst",
+		"description": "Redux const to expose (part) of the state",
+		"body": [
+			"export const ${1} = (state: { ${2:${TM_FILENAME_BASE}}: I${2/(.*)/${1:/capitalize}/}State }) => state.${2}.${1};"
+		]
+	},
+	"Redux selector const": {
+		"scope": "javascriptreact,typescriptreact",
+		"prefix": "rxsel",
+		"description": "Redux const for the app selector",
+		"body": [
+			"const { ${2:variables} } = useAppSelector((state) => state.${1:store});"
+		]
+	},
+
+	// React intl
+	"React Intl import useIntl": {
+		"scope": "javascriptreact,typescriptreact",
+		"prefix": "impint",
+		"description": "React Intl import useIntl",
+		"body": ["import { useIntl } from 'react-intl';"]
+	},
+	"React Intl useIntl as const": {
+		"scope": "javascriptreact,typescriptreact",
+		"prefix": "useintl",
+		"description": "React Intl useIntl as const",
+		"body": ["const intl = useIntl();"]
+	},
+
+	// Styled components
+	"import styled from 'styled-components'": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "imsc",
+		"description": "import styled from 'styled-components'",
+		"body": ["import styled from 'styled-components';"]
+	},
+	"import { createGlobalStyle } from 'styled-components'": {
+		"prefix": "imscg",
+		"description": "import { createGlobalStyle } from 'styled-components'",
+		"body": ["import { createGlobalStyle } from 'styled-components';"]
+	},
+	"import styled, { css } from 'styled-components'": {
+		"prefix": "imsccss",
+		"description": "import { css } from 'styled-components'",
+		"body": ["import { css } from 'styled-components';"]
+	},
+	"import { css } from 'styled-components'": {
+		"prefix": "imcss",
+		"description": "import { css } from 'styled-components'",
+		"body": ["import { css } from 'styled-components';"]
+	},
+	"import { withTheme } from 'styled-components'": {
+		"prefix": "imsct",
+		"description": "import { withTheme } from 'styled-components'",
+		"body": "import { withTheme } from 'styled-components';"
+	},
+	"Export styled-component": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "sc",
+		"description": "Export styled-component",
+		"body": ["export const ${1} = styled.${2}`", "\t${3}", "`;"]
+	},
+	"Export styled-component from existing component": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "scc",
+		"description": "Export styled-component from existing component",
+		"body": ["export const ${1} = styled(${2})`", "\t${3}", "`;"]
+	},
+	"Export styled-component with attributes": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "scattrs",
+		"description": "Export styled-component with attributes",
+		"body": [
+			"export const ${1} = styled.${2}.attrs(props => ({",
+			"\t${3}",
+			"}))`",
+			"\t${4}",
+			"`;"
+		]
+	},
+	"Export styled-component with attributes from existing component": {
+		"scope": "javascript,typescript,javascriptreact,typescriptreact",
+		"prefix": "sccattrs",
+		"description": "Export styled-component with attributes",
+		"body": [
+			"export const ${1} = styled(${2}).attrs(props => ({",
+			"\t${3}",
+			"}))`",
+			"\t${4}",
+			"`;"
+		]
+	},
+	"Use props.theme inside styled-component": {
+		"scope": "css",
+		"prefix": "scpt",
+		"description": "Use props.theme inside styled-component",
+		"body": ["${({ theme }) => theme.$1};"]
+	},
+	"Use props inside styled-component": {
+		"scope": "css",
+		"prefix": "scp",
+		"description": "Use props inside styled-component",
+		"body": ["${props => props.$1};"]
+	},
+	"Use props inside styled-component (destructured)": {
+		"scope": "css",
+		"prefix": "scpd",
+		"description": "Use props inside styled-component (destructured)",
+		"body": ["${({ ${1} }) => ${1}};"]
+	}
+}
