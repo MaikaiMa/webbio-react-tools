@@ -4,6 +4,10 @@
 	"description": "Webbio specific React tools and snippets",
 	"version": "1.0.0",
 	"license": "MIT",
+	"repository": {
+		"url": "https://github.com/MaikaiMa/webbio-react-tools",
+		"type": "extension"
+	},
 	"engines": {
 		"vscode": "^1.66.0"
 	},
