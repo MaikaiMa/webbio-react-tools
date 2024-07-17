@@ -2,12 +2,7 @@ import * as vscode from "vscode";
 import createComponent from "./create-component";
 import ELEMENT_OPTIONS, { ElementOptions } from "./utils/constants/options.ts";
 
-const handleCreateComponent = async (
-	args: any,
-	html?: boolean,
-	styled?: boolean
-) => {
-	let htmlElement: ElementOptions;
+const handleCreateComponent = async (args: any, styled?: boolean) => {
 	let styleType: ElementOptions;
 
 	const componentName = await vscode.window.showInputBox({
@@ -15,6 +10,15 @@ const handleCreateComponent = async (
 		ignoreFocusOut: true,
 		valueSelection: [-1, -1],
 	});
+
+	const htmlElement: ElementOptions = await vscode.window.showQuickPick(
+		ELEMENT_OPTIONS,
+		{
+			ignoreFocusOut: true,
+			canPickMany: false,
+			placeHolder: "Pick an element",
+		}
+	);
 
 	if (styled) {
 		styleType = await vscode.window.showQuickPick(
@@ -38,14 +42,6 @@ const handleCreateComponent = async (
 				placeHolder: "Use CSS module or styled component?",
 			}
 		);
-	}
-
-	if (html || styled) {
-		htmlElement = await vscode.window.showQuickPick(ELEMENT_OPTIONS, {
-			ignoreFocusOut: true,
-			canPickMany: false,
-			placeHolder: "Use CSS module or styled component?",
-		});
 	}
 
 	if (!componentName || componentName === "") {
@@ -74,12 +70,6 @@ export function activate(context: vscode.ExtensionContext) {
 		),
 		vscode.commands.registerCommand(
 			"react-tools.create-styled-component",
-			(args) => {
-				handleCreateComponent(args, false, true);
-			}
-		),
-		vscode.commands.registerCommand(
-			"react-tools.create-html-component",
 			(args) => {
 				handleCreateComponent(args, true);
 			}

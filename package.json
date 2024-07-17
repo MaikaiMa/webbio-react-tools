@@ -26,10 +26,6 @@
 				"title": "Create React component"
 			},
 			{
-				"command": "react-tools.create-html-component",
-				"title": "Create React HTML component"
-			},
-			{
 				"command": "react-tools.create-styled-component",
 				"title": "Create React styled component"
 			}
@@ -38,11 +34,6 @@
 			"explorer/context": [
 				{
 					"command": "react-tools.create-component",
-					"group": "1_modification",
-					"when": "explorerResourceIsFolder"
-				},
-				{
-					"command": "react-tools.create-html-component",
 					"group": "1_modification",
 					"when": "explorerResourceIsFolder"
 				},

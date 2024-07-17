@@ -1,11 +1,11 @@
 export default (componentName: string) => {
 	return `import React from 'react';
 
-export type ${componentName}Props = {};
+export type TestComponentProps = React.PropsWithChildren;
 
-const ${componentName}: ReactComponent<${componentName}Props> = ({ ...rest }) => {
+const ${componentName}: ReactComponent<${componentName}Props> = () => {
 	return (
-		<{...rest}>
+		<>
 
 		</>
 	);

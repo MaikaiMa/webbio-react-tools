@@ -115,7 +115,7 @@ export default async (
 			default:
 				break;
 		}
-	} else if (htmlElement) {
+	} else if (!!htmlElement?.value) {
 		await createFile(filePath(INDEX_FILE_NAME), indexFile(fileName));
 
 		await createFile(
