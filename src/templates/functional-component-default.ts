@@ -3,11 +3,11 @@ export default (componentName: string) => {
 
 export type ${componentName}Props = {};
 
-export const ${componentName}: ReactComponent<${componentName}Props> = ({ ...rest }) => {
+const ${componentName}: ReactComponent<${componentName}Props> = ({ ...rest }) => {
 	return (
-		<div {...rest}>
+		<{...rest}>
 
-		</div>
+		</>
 	);
 };
 

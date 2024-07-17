@@ -4,11 +4,11 @@ export default (
 	htmlType: string,
 	htmlTag: string
 ) => {
-	return `import { HTMLAttributes } from 'react';
+	return `import React from 'react';
 import clsx from 'clsx';
 import styles from './${fileName}.module.scss';
 
-export type ${componentName}Props = HTMLAttributes<${htmlType}>;
+export type ${componentName}Props = ${htmlType};
 
 const ${componentName}: ReactComponent<${componentName}Props> = ({ className, ...rest }) => {
 	return (

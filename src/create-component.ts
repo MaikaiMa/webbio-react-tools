@@ -3,7 +3,7 @@ import * as vscode from "vscode";
 import createFile from "./utils/create-file";
 import convertToComponentName from "./utils/convert-to-component-name";
 import createDirectory from "./utils/create-directory";
-import { ElementOptions } from "./utils/constants/element-options";
+import { ElementOptions } from "./utils/constants/options.ts";
 
 // Default
 import functionalComponent from "./templates/functional-component-default";

@@ -1,9 +1,6 @@
 import * as vscode from "vscode";
 import createComponent from "./create-component";
-import {
-	ELEMENT_OPTIONS,
-	ElementOptions,
-} from "./utils/constants/element-options";
+import ELEMENT_OPTIONS, { ElementOptions } from "./utils/constants/options.ts";
 
 const handleCreateComponent = async (
 	args: any,

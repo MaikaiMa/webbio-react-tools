@@ -1,9 +1,9 @@
 export default (componentName: string, htmlType: string, htmlTag: string) => {
-	return `import { type HTMLAttributes } from 'react';
+	return `import React from 'react';
 
-export type ${componentName}Props = HTMLAttributes<${htmlType}>;
+export type ${componentName}Props = ${htmlType};
 
-export const ${componentName}: ReactComponent<${componentName}Props> = ({ ...rest }) => {
+const ${componentName}: ReactComponent<${componentName}Props> = ({ ...rest }) => {
 	return (
 		<${htmlTag} {...rest}>
 
