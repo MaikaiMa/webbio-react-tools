@@ -13,7 +13,10 @@ The templates need the following Typescript helper type to function correctly:
 import { ReactElement } from "react";
 
 declare global {
-	type ReactComponent<T = any> = (props: T) => ReactElement | null;
+	type ReactComponent<T = Record<string, any>> = {
+		(props: T): ReactElement | null;
+		displayName?: string;
+	};
 }
 ```
 
