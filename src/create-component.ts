@@ -3,6 +3,7 @@ import * as vscode from "vscode";
 import createFile from "./utils/create-file";
 import convertToComponentName from "./utils/convert-to-component-name";
 import createDirectory from "./utils/create-directory";
+import getActiveDirectory from "./utils/get-active-directory";
 import { ElementOptions } from "./utils/constants/options.ts";
 
 // Default
@@ -48,13 +49,16 @@ export default async (
 	const STORY_FILE_NAME = `${fileName}.stories.ts`;
 
 	if (!directory) {
-		directory =
-			(await vscode.window.showInputBox({
-				value: "/",
-				prompt: `Path from root`,
-				ignoreFocusOut: true,
-				valueSelection: [-1, -1],
-			})) || "";
+		directory = await vscode.window.showInputBox({
+			value: getActiveDirectory(directory),
+			prompt: `Path from root`,
+			ignoreFocusOut: true,
+			valueSelection: [-1, -1],
+		});
+	}
+
+	if (!directory) {
+		return;
 	}
 
 	if (!directory.includes(projectRoot)) {
