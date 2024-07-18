@@ -2,6 +2,8 @@
 	"name": "webbio-react-tools",
 	"displayName": "Webbio React tools",
 	"description": "Webbio specific React tools and snippets",
+	"icon": "assets/logo.png",
+	"publisher": "Webbio",
 	"version": "1.0.0",
 	"license": "MIT",
 	"repository": {
