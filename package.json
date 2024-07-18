@@ -27,7 +27,8 @@
 			},
 			{
 				"command": "react-tools.create-styled-component",
-				"title": "Create React styled component"
+				"title": "Create React styled component",
+				"when": "webbioReactTools.enableStyledComponents"
 			}
 		],
 		"menus": {
@@ -40,7 +41,7 @@
 				{
 					"command": "react-tools.create-styled-component",
 					"group": "1_modification",
-					"when": "explorerResourceIsFolder"
+					"when": "explorerResourceIsFolder && webbioReactTools.enableStyledComponents"
 				}
 			]
 		},
@@ -48,7 +49,17 @@
 			{
 				"path": "./snippets/snippets.code-snippets"
 			}
-		]
+		],
+		"configuration": {
+			"title": "Webbio: React tools",
+			"properties": {
+				"webbioReactTools.enableStyledComponents": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable styled component options"
+				}
+			}
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "yarn run package",

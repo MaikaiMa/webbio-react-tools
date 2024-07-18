@@ -2,6 +2,8 @@ import * as vscode from "vscode";
 import createComponent from "./create-component";
 import ELEMENT_OPTIONS, { ElementOptions } from "./utils/constants/options.ts";
 
+const EXTENSION_KEY = "webbioReactTools";
+
 const handleCreateComponent = async (args: any, styled?: boolean) => {
 	let styleType: ElementOptions;
 
@@ -60,7 +62,20 @@ const handleCreateComponent = async (args: any, styled?: boolean) => {
 	}
 };
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
+	const OPTION_KEY = "enableStyledComponents";
+	const SETTING_KEY = `${EXTENSION_KEY}.${OPTION_KEY}`;
+
+	const initialEnableStyledComponents = await vscode.workspace
+		.getConfiguration(EXTENSION_KEY)
+		.get<boolean>(OPTION_KEY);
+
+	await vscode.commands.executeCommand(
+		"setContext",
+		SETTING_KEY,
+		initialEnableStyledComponents
+	);
+
 	const disposable = [
 		vscode.commands.registerCommand(
 			"react-tools.create-component",
@@ -75,6 +90,22 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		),
 	];
+
+	vscode.workspace.onDidChangeConfiguration(async (event) => {
+		if (!event.affectsConfiguration(SETTING_KEY)) return;
+
+		const enableStyledComponents = vscode.workspace
+			.getConfiguration(EXTENSION_KEY)
+			.get<boolean>(OPTION_KEY, initialEnableStyledComponents);
+
+		if (event.affectsConfiguration(SETTING_KEY)) {
+			await vscode.commands.executeCommand(
+				"setContext",
+				SETTING_KEY,
+				enableStyledComponents
+			);
+		}
+	});
 
 	context.subscriptions.push(...disposable);
 }
