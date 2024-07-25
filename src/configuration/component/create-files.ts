@@ -18,7 +18,7 @@ const createFiles = async (
 	const filePath = (name: string) => [directoryWithFileName, name].join("/");
 	await createFile(filePath(INDEX_FILE_NAME), indexFile(fileName, componentName));
 
-	if (!!htmlElement && !!htmlElement.value) {
+	if (!!htmlElement && !!htmlElement.value && htmlElement.value !== "fragment") {
 		await createFile(
 			filePath(COMPONENT_FILE_NAME),
 			functionalComponentHtmlFile(componentName, htmlElement.value, htmlElement.label)
