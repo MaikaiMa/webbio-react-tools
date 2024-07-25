@@ -29,11 +29,16 @@
 			},
 			{
 				"command": "react-tools.create-styled-component",
-				"title": "Create React styled component",
-				"when": "webbioReactTools.enableStyledComponents"
+				"title": "Create React styled component"
 			}
 		],
 		"menus": {
+			"commandPalette": [
+				{
+					"command": "react-tools.create-styled-component",
+					"when": "webbioReactTools.enableStyledComponents || webbioReactTools.enableCssModules"
+				}
+			],
 			"explorer/context": [
 				{
 					"command": "react-tools.create-component",
@@ -43,7 +48,7 @@
 				{
 					"command": "react-tools.create-styled-component",
 					"group": "1_modification",
-					"when": "explorerResourceIsFolder && webbioReactTools.enableStyledComponents"
+					"when": "explorerResourceIsFolder && (webbioReactTools.enableStyledComponents || webbioReactTools.enableCssModules)"
 				}
 			]
 		},
@@ -59,6 +64,21 @@
 					"type": "boolean",
 					"default": true,
 					"description": "Enable styled component options"
+				},
+				"webbioReactTools.enableCssModules": {
+					"type": "boolean",
+					"default": true,
+					"description": "Enable (S)CSS modules options"
+				},
+				"webbioReactTools.enableStorybook": {
+					"type": "boolean",
+					"default": false,
+					"description": "Enable story files for Storybook"
+				},
+				"webbioReactTools.enableJest": {
+					"type": "boolean",
+					"default": false,
+					"description": "Enable test files for Jest"
 				}
 			}
 		}

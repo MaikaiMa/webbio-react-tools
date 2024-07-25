@@ -5,7 +5,7 @@ export const BASE_OPTIONS: ElementOptions[] = [
 		label: "fragment",
 		alwaysShow: true,
 		description: "Typeless fragment",
-		value: "",
+		value: "fragment",
 	},
 	{
 		label: "div",

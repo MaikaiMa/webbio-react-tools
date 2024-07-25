@@ -1,52 +1,35 @@
 import * as vscode from "vscode";
 
-import createFile from "./utils/create-file";
 import convertToComponentName from "./utils/convert-to-component-name";
 import createDirectory from "./utils/create-directory";
 import getActiveDirectory from "./utils/get-active-directory";
-import { ElementOptions } from "./utils/constants/options.ts";
+import { ElementOptions } from "./constants/options.ts";
+
+import { EXTENSION_KEY } from "./constants/extension-key";
+import { JEST_OPTION_KEY } from "./configuration/test/jest/constants";
+import { STORYBOOK_OPTION_KEY } from "./configuration/story/storybook/constants";
 
 // Default
-import functionalComponent from "./templates/functional-component-default";
-import indexFile from "./templates/index-file";
-import testFile from "./templates/test-file";
-import storyFile from "./templates/story-file";
+import { createComponentFiles } from "./configuration/component";
+import { createJestFiles } from "./configuration/test/jest";
+import { createStorybookFiles } from "./configuration/story/storybook";
 
-// HTML
-import functionalComponentHtml from "./templates/functional-component-html";
-
-// Styled Component
-import functionalComponentStyled from "./templates/functional-component-styled";
-import indexFileStyled from "./templates/index-file-styled";
-import styledFile from "./templates/styled-file";
-
-// SCSS
-import functionalComponentScss from "./templates/functional-component-scss";
-import scssFile from "./templates/scss-file";
+// Styled options
+import { createStyledComponentFiles } from "./configuration/styled/styled-component";
+import { createCssModulesFiles } from "./configuration/styled/css-modules";
 
 interface Props {
 	directory?: string;
 	styleType?: ElementOptions;
 	htmlElement?: ElementOptions;
-	useTest?: boolean;
-	useStory?: boolean;
 }
 
-export default async (
-	fileName: string,
-	{ directory, htmlElement, styleType, useTest, useStory }: Props
-) => {
+export default async (fileName: string, { directory, htmlElement, styleType }: Props) => {
 	const componentName = convertToComponentName(fileName);
-	const projectRoot = (vscode.workspace.workspaceFolders as any)[0].uri
-		.fsPath;
+	const projectRoot = (vscode.workspace.workspaceFolders as any)[0].uri.fsPath;
 
 	// Filenames
 	const COMPONENT_FILE_NAME = `${fileName}.tsx`;
-	const INDEX_FILE_NAME = "index.ts";
-	const STYLED_FILE_NAME = `${fileName}.styles.ts`;
-	const SCSS_FILE_NAME = `${fileName}.module.scss`;
-	const TEST_FILE_NAME = `${fileName}.test.ts`;
-	const STORY_FILE_NAME = `${fileName}.stories.ts`;
 
 	if (!directory) {
 		directory = await vscode.window.showInputBox({
@@ -57,9 +40,7 @@ export default async (
 		});
 	}
 
-	if (!directory) {
-		return;
-	}
+	if (!directory) return;
 
 	if (!directory.includes(projectRoot)) {
 		directory = projectRoot + directory;
@@ -70,100 +51,45 @@ export default async (
 	}
 
 	const directoryWithFileName = directory + fileName;
-	const filePath = (name: string) => directoryWithFileName + "/" + name;
+	const filePath = (name: string) => [directoryWithFileName, name].join("/");
 
 	createDirectory(directoryWithFileName);
 
 	if (htmlElement && styleType) {
 		switch (styleType.value) {
 			case "css":
-				await createFile(
-					filePath(INDEX_FILE_NAME),
-					indexFile(fileName)
-				);
-
-				await createFile(
-					filePath(COMPONENT_FILE_NAME),
-					functionalComponentScss(
-						fileName,
-						componentName,
-						htmlElement.value,
-						htmlElement.label
-					)
-				);
-
-				await createFile(filePath(SCSS_FILE_NAME), scssFile());
-
+				await createCssModulesFiles(directoryWithFileName, fileName, componentName, htmlElement);
 				break;
 			case "sc":
-				await createFile(
-					filePath(COMPONENT_FILE_NAME),
-					functionalComponentStyled(
-						fileName,
-						componentName,
-						htmlElement.value
-					)
-				);
-
-				await createFile(
-					filePath(STYLED_FILE_NAME),
-					styledFile(fileName, componentName, htmlElement.label)
-				);
-
-				await createFile(
-					filePath(INDEX_FILE_NAME),
-					indexFileStyled(fileName, componentName)
+				await createStyledComponentFiles(
+					directoryWithFileName,
+					fileName,
+					componentName,
+					htmlElement
 				);
 
 				break;
 			default:
 				break;
 		}
-	} else if (!!htmlElement?.value) {
-		await createFile(filePath(INDEX_FILE_NAME), indexFile(fileName));
-
-		await createFile(
-			filePath(COMPONENT_FILE_NAME),
-			functionalComponentHtml(
-				componentName,
-				htmlElement.value,
-				htmlElement.label
-			)
-		);
 	} else {
-		await createFile(filePath(INDEX_FILE_NAME), indexFile(fileName));
-
-		await createFile(
-			filePath(COMPONENT_FILE_NAME),
-			functionalComponent(componentName)
-		);
+		await createComponentFiles(directoryWithFileName, fileName, componentName, htmlElement);
 	}
 
-	if (!styleType && !htmlElement) {
-		await createFile(
-			filePath(COMPONENT_FILE_NAME),
-			functionalComponent(componentName)
-		);
+	if (vscode.workspace.getConfiguration(EXTENSION_KEY).get<boolean>(JEST_OPTION_KEY)) {
+		await createJestFiles(directoryWithFileName, fileName, componentName);
 	}
 
-	// Always disabled
-	if (useTest) {
-		await createFile(filePath(TEST_FILE_NAME), testFile(componentName));
-	}
-
-	// Always disabled
-	if (useStory) {
-		await createFile(filePath(STORY_FILE_NAME), storyFile(componentName));
+	if (vscode.workspace.getConfiguration(EXTENSION_KEY).get<boolean>(STORYBOOK_OPTION_KEY)) {
+		await createStorybookFiles(directoryWithFileName, fileName, componentName);
 	}
 
 	setTimeout(() => {
-		vscode.workspace
-			.openTextDocument(filePath(COMPONENT_FILE_NAME))
-			.then((editor) => {
-				if (!editor) {
-					return;
-				}
-				vscode.window.showTextDocument(editor);
-			});
+		vscode.workspace.openTextDocument(filePath(COMPONENT_FILE_NAME)).then((editor) => {
+			if (!editor) {
+				return;
+			}
+			vscode.window.showTextDocument(editor);
+		});
 	}, 50);
 };

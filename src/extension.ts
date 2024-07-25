@@ -1,10 +1,22 @@
 import * as vscode from "vscode";
 import createComponent from "./create-component";
-import ELEMENT_OPTIONS, { ElementOptions } from "./utils/constants/options.ts";
+import ELEMENT_OPTIONS, { ElementOptions } from "./constants/options.ts";
 
-const EXTENSION_KEY = "webbioReactTools";
+import { STYLED_COMPONENT_SETTING_KEY } from "./configuration/styled/styled-component/constants";
+import { CSS_MODULES_SETTING_KEY } from "./configuration/styled/css-modules/constants";
+import { STORYBOOK_SETTING_KEY } from "./configuration/story/storybook/constants";
+import { JEST_SETTING_KEY } from "./configuration/test/jest/constants";
 
-const handleCreateComponent = async (args: any, styled?: boolean) => {
+import { initializeStyledComponentConfiguration } from "./configuration/styled/styled-component";
+import { initializeCssModulesConfiguration } from "./configuration/styled/css-modules";
+import { initializeStorybookConfiguration } from "./configuration/story/storybook";
+import { initializeJestConfiguration } from "./configuration/test/jest";
+
+import globalConfigurationChangeHandler from "./configuration";
+import styledOptionCommands from "./configuration/styled/commands";
+import styledOptionQuickPick from "./configuration/styled/quick-pick";
+
+export const handleCreateComponent = async (args: any, styled?: boolean) => {
 	let styleType: ElementOptions;
 
 	const componentName = await vscode.window.showInputBox({
@@ -13,41 +25,21 @@ const handleCreateComponent = async (args: any, styled?: boolean) => {
 		valueSelection: [-1, -1],
 	});
 
-	const htmlElement: ElementOptions = await vscode.window.showQuickPick(
-		ELEMENT_OPTIONS,
-		{
-			ignoreFocusOut: true,
-			canPickMany: false,
-			placeHolder: "Pick an element",
-		}
-	);
+	// Cancel
+	if (!componentName || componentName === "") return;
+
+	const htmlElement: ElementOptions = await vscode.window.showQuickPick(ELEMENT_OPTIONS, {
+		ignoreFocusOut: true,
+		canPickMany: false,
+		placeHolder: "Pick an element",
+	});
+
+	// Cancel
+	if (!htmlElement) return;
 
 	if (styled) {
-		styleType = await vscode.window.showQuickPick(
-			[
-				{
-					label: "CSS Module",
-					alwaysShow: true,
-					description: "Uses SCSS file as CSS module",
-					value: "css",
-				},
-				{
-					label: "Styled component",
-					alwaysShow: true,
-					description: "Use styled components styling file",
-					value: "sc",
-				},
-			],
-			{
-				ignoreFocusOut: true,
-				canPickMany: false,
-				placeHolder: "Use CSS module or styled component?",
-			}
-		);
-	}
-
-	if (!componentName || componentName === "") {
-		return;
+		styleType = await styledOptionQuickPick();
+		if (!styleType) return;
 	}
 
 	if (args) {
@@ -63,51 +55,36 @@ const handleCreateComponent = async (args: any, styled?: boolean) => {
 };
 
 export async function activate(context: vscode.ExtensionContext) {
-	const OPTION_KEY = "enableStyledComponents";
-	const SETTING_KEY = `${EXTENSION_KEY}.${OPTION_KEY}`;
+	// Initialize configurale option context
+	const initialEnableStyledComponents = await initializeStyledComponentConfiguration(vscode);
+	const initialEnableCssModules = await initializeCssModulesConfiguration(vscode);
+	const initialEnableStorybook = await initializeStorybookConfiguration(vscode);
+	const initialEnableJest = await initializeJestConfiguration(vscode);
 
-	const initialEnableStyledComponents = await vscode.workspace
-		.getConfiguration(EXTENSION_KEY)
-		.get<boolean>(OPTION_KEY);
+	const initialEnabledOptions = {
+		[CSS_MODULES_SETTING_KEY]: initialEnableCssModules,
+		[STYLED_COMPONENT_SETTING_KEY]: initialEnableStyledComponents,
+		[STORYBOOK_SETTING_KEY]: initialEnableStorybook,
+		[JEST_SETTING_KEY]: initialEnableJest,
+	};
 
-	await vscode.commands.executeCommand(
-		"setContext",
-		SETTING_KEY,
-		initialEnableStyledComponents
+	// Register (optional) commands
+	context.subscriptions.push(
+		...[
+			vscode.commands.registerCommand("react-tools.create-component", (args) => {
+				handleCreateComponent(args);
+			}),
+			// Only add command if any styled components option is enabled
+			...(Object.values(initialEnabledOptions).some((enabled) => enabled)
+				? styledOptionCommands
+				: []),
+		]
 	);
 
-	const disposable = [
-		vscode.commands.registerCommand(
-			"react-tools.create-component",
-			(args) => {
-				handleCreateComponent(args);
-			}
-		),
-		vscode.commands.registerCommand(
-			"react-tools.create-styled-component",
-			(args) => {
-				handleCreateComponent(args, true);
-			}
-		),
-	];
-
+	// Add change listners for configuration changes to trigger option context
 	vscode.workspace.onDidChangeConfiguration(async (event) => {
-		if (!event.affectsConfiguration(SETTING_KEY)) return;
-
-		const enableStyledComponents = vscode.workspace
-			.getConfiguration(EXTENSION_KEY)
-			.get<boolean>(OPTION_KEY, initialEnableStyledComponents);
-
-		if (event.affectsConfiguration(SETTING_KEY)) {
-			await vscode.commands.executeCommand(
-				"setContext",
-				SETTING_KEY,
-				enableStyledComponents
-			);
-		}
+		await globalConfigurationChangeHandler(vscode, event, context, initialEnabledOptions);
 	});
-
-	context.subscriptions.push(...disposable);
 }
 
 export function deactivate() {}
