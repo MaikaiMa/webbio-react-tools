@@ -4,7 +4,7 @@
 	"description": "Webbio specific React tools and snippets",
 	"icon": "assets/logo.png",
 	"publisher": "Webbio",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"license": "MIT",
 	"repository": {
 		"url": "https://github.com/MaikaiMa/webbio-react-tools",
@@ -132,11 +132,6 @@
 						"type": "boolean",
 						"default": false,
 						"description": "Enable test files for Jest"
-					},
-					"webbioReactTools.test": {
-						"type": "string",
-						"description": "test",
-						"editPresentation": "multilineText"
 					}
 				}
 			}

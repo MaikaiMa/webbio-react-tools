@@ -31,8 +31,6 @@ const initialize = async (
 
 	await vsCode.commands.executeCommand("setContext", DIRECTIVE_SETTING_KEY, initialUseDirective);
 
-	await vsCode.commands.executeCommand("setContext", "test", "");
-
 	return {
 		componentFileCase: initialComponentFileCase,
 		useDirective: initialUseDirective,
