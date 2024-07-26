@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
+import { EXTENSION_KEY } from "@/constants/extension-key";
 import { JEST_OPTION_KEY, JEST_SETTING_KEY } from "./constants";
-import { EXTENSION_KEY } from "../../../constants/extension-key";
 
 // Pass toplevel vscode object to avoid data mismatch
 const initialize = async (vsCode: typeof vscode): Promise<boolean> => {

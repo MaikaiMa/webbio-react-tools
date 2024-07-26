@@ -4,7 +4,7 @@
 	"description": "Webbio specific React tools and snippets",
 	"icon": "assets/logo.png",
 	"publisher": "Webbio",
-	"version": "1.0.1",
+	"version": "2.0.0",
 	"license": "MIT",
 	"repository": {
 		"url": "https://github.com/MaikaiMa/webbio-react-tools",
@@ -36,7 +36,7 @@
 			"commandPalette": [
 				{
 					"command": "react-tools.create-styled-component",
-					"when": "webbioReactTools.enableStyledComponents || webbioReactTools.enableCssModules"
+					"when": "webbioReactTools.enableStyledComponents || webbioReactTools.enableTailwind || webbioReactTools.enableCssModules"
 				}
 			],
 			"explorer/context": [
@@ -48,7 +48,7 @@
 				{
 					"command": "react-tools.create-styled-component",
 					"group": "1_modification",
-					"when": "explorerResourceIsFolder && (webbioReactTools.enableStyledComponents || webbioReactTools.enableCssModules)"
+					"when": "explorerResourceIsFolder && (webbioReactTools.enableStyledComponents || webbioReactTools.enableTailwind || webbioReactTools.enableCssModules)"
 				}
 			]
 		},
@@ -57,54 +57,90 @@
 				"path": "./snippets/snippets.code-snippets"
 			}
 		],
-		"configuration": {
-			"title": "Webbio: React tools",
-			"properties": {
-				"webbioReactTools.componentFileCase": {
-					"type": "string",
-					"default": "kebabCase",
-					"description": "Prefered case for component file names",
-					"enum": [
-						"kebabCase",
-						"camelCase",
-						"pascalCase",
-						"snakeCase",
-						"pascalSnakeCase",
-						"trainCase",
-						"dotCase"
-					],
-					"enumDescriptions": [
-						"two-words",
-						"twoWords",
-						"TwoWords",
-						"two_words",
-						"Two_Words",
-						"Two-Words",
-						"two.words"
-					]
-				},
-				"webbioReactTools.enableStyledComponents": {
-					"type": "boolean",
-					"default": true,
-					"description": "Enable styled component options"
-				},
-				"webbioReactTools.enableCssModules": {
-					"type": "boolean",
-					"default": true,
-					"description": "Enable (S)CSS modules options"
-				},
-				"webbioReactTools.enableStorybook": {
-					"type": "boolean",
-					"default": false,
-					"description": "Enable story files for Storybook"
-				},
-				"webbioReactTools.enableJest": {
-					"type": "boolean",
-					"default": false,
-					"description": "Enable test files for Jest"
+		"configuration": [
+			{
+				"id": "component",
+				"title": "React component",
+				"order": 1,
+				"properties": {
+					"webbioReactTools.componentFileCase": {
+						"type": "string",
+						"default": "kebabCase",
+						"description": "Prefered case for component file names",
+						"enum": [
+							"kebabCase",
+							"camelCase",
+							"pascalCase",
+							"snakeCase",
+							"pascalSnakeCase",
+							"trainCase",
+							"dotCase"
+						],
+						"enumDescriptions": [
+							"two-words",
+							"twoWords",
+							"TwoWords",
+							"two_words",
+							"Two_Words",
+							"Two-Words",
+							"two.words"
+						]
+					},
+					"webbioReactTools.useDirective": {
+						"type": "boolean",
+						"default": false,
+						"description": "Enable option to select file directive ('use strict', 'use client', 'use server')"
+					}
+				}
+			},
+			{
+				"id": "styling",
+				"title": "Styling components",
+				"order": 2,
+				"properties": {
+					"webbioReactTools.enableStyledComponents": {
+						"type": "boolean",
+						"default": true,
+						"order": 1,
+						"description": "Enable styled component options"
+					},
+					"webbioReactTools.enableTailwind": {
+						"type": "boolean",
+						"default": true,
+						"order": 2,
+						"description": "Enable Tailwind modules options"
+					},
+					"webbioReactTools.enableCssModules": {
+						"type": "boolean",
+						"default": true,
+						"order": 3,
+						"description": "Enable (S)CSS modules options"
+					}
+				}
+			},
+			{
+				"id": "other",
+				"title": "Other options",
+				"order": 3,
+				"properties": {
+					"webbioReactTools.enableStorybook": {
+						"type": "boolean",
+						"default": false,
+						"description": "Enable story files for Storybook"
+					},
+					"webbioReactTools.enableJest": {
+						"type": "boolean",
+						"default": false,
+						"description": "Enable test files for Jest"
+					},
+					"webbioReactTools.test": {
+						"type": "string",
+						"description": "test",
+						"editPresentation": "multilineText"
+					}
 				}
 			}
-		}
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "yarn run package",

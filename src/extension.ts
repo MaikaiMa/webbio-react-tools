@@ -2,29 +2,42 @@ import * as vscode from "vscode";
 import * as changeCase from "change-case";
 
 import createComponent from "./create-component";
-import ELEMENT_OPTIONS, { ElementOptions } from "./constants/options.ts";
+import ELEMENT_OPTIONS, { ElementOptions } from "./constants/element-options";
+
+import {
+	COMPONENT_CASE_OPTION_KEY,
+	DIRECTIVE_SETTING_KEY,
+	DIRECTIVE_OPTION_KEY,
+} from "./configuration/component/constants";
 
 import { EXTENSION_KEY } from "./constants/extension-key";
-import { COMPONENT_CASE_OPTION_KEY } from "./configuration/component/constants";
 import { STYLED_COMPONENT_SETTING_KEY } from "./configuration/styled/styled-component/constants";
-import { CSS_MODULES_SETTING_KEY } from "./configuration/styled/css-modules/constants";
 import { STORYBOOK_SETTING_KEY } from "./configuration/story/storybook/constants";
+import { TAILWIND_SETTING_KEY } from "./configuration/styled/tailwind/constants";
+import { CSS_MODULES_SETTING_KEY } from "./configuration/styled/css-modules/constants";
 import { JEST_SETTING_KEY } from "./configuration/test/jest/constants";
 
+import { initializeComponentConfiguration } from "./configuration/component";
 import { initializeStyledComponentConfiguration } from "./configuration/styled/styled-component";
+import { initializeTailwindConfiguration } from "./configuration/styled/tailwind";
 import { initializeCssModulesConfiguration } from "./configuration/styled/css-modules";
 import { initializeStorybookConfiguration } from "./configuration/story/storybook";
 import { initializeJestConfiguration } from "./configuration/test/jest";
 
+import onDidChangeComponentConfiguration from "./configuration/component/configuration-change";
 import globalConfigurationChangeHandler from "./configuration";
 import styledOptionCommands from "./configuration/styled/commands";
 import styledOptionQuickPick from "./configuration/styled/quick-pick";
-import onDidChangeComponentConfiguration from "./configuration/component/configuration-change";
-import { initializeComponentConfiguration } from "./configuration/component";
+import DIRECTIVE_OPTIONS from "./constants/directive-options";
 
 export const handleCreateComponent = async (args: any, styled?: boolean) => {
 	let styleType: ElementOptions;
+	let directive: ElementOptions;
 	let componentName: string;
+
+	const useDirective = vscode.workspace
+		.getConfiguration(EXTENSION_KEY)
+		.get<boolean>(DIRECTIVE_OPTION_KEY);
 
 	const preferedCase = vscode.workspace
 		.getConfiguration(EXTENSION_KEY)
@@ -60,29 +73,44 @@ export const handleCreateComponent = async (args: any, styled?: boolean) => {
 		if (!styleType) return;
 	}
 
+	if (useDirective) {
+		directive = await vscode.window.showQuickPick(DIRECTIVE_OPTIONS, {
+			ignoreFocusOut: true,
+			canPickMany: false,
+			placeHolder: "Select the file directive",
+		});
+	}
+
 	if (args) {
 		const path = args.fsPath;
-		createComponent(componentName, {
-			directory: path,
-			htmlElement,
-			styleType,
-		});
+		createComponent(
+			componentName,
+			{
+				directory: path,
+				htmlElement,
+				styleType,
+			},
+			directive
+		);
 	} else {
-		createComponent(componentName, { htmlElement, styleType });
+		createComponent(componentName, { htmlElement, styleType }, directive);
 	}
 };
 
 export async function activate(context: vscode.ExtensionContext) {
 	// Initialize configurale option context
-	const initialcomponentFileCase = await initializeComponentConfiguration(vscode);
+	const { componentFileCase, useDirective } = await initializeComponentConfiguration(vscode);
 	const initialEnableStyledComponents = await initializeStyledComponentConfiguration(vscode);
+	const initialEnableTailwind = await initializeTailwindConfiguration(vscode);
 	const initialEnableCssModules = await initializeCssModulesConfiguration(vscode);
 	const initialEnableStorybook = await initializeStorybookConfiguration(vscode);
 	const initialEnableJest = await initializeJestConfiguration(vscode);
 
 	const initialEnabledOptions = {
-		[CSS_MODULES_SETTING_KEY]: initialEnableCssModules,
 		[STYLED_COMPONENT_SETTING_KEY]: initialEnableStyledComponents,
+		[DIRECTIVE_SETTING_KEY]: initialEnableStyledComponents,
+		[TAILWIND_SETTING_KEY]: initialEnableTailwind,
+		[CSS_MODULES_SETTING_KEY]: initialEnableCssModules,
 		[STORYBOOK_SETTING_KEY]: initialEnableStorybook,
 		[JEST_SETTING_KEY]: initialEnableJest,
 	};
@@ -103,7 +131,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	// Add change listners for configuration changes to trigger option context
 	vscode.workspace.onDidChangeConfiguration(async (event) => {
 		// Default configuration changes
-		await onDidChangeComponentConfiguration(vscode, event, initialcomponentFileCase);
+		await onDidChangeComponentConfiguration(vscode, event, componentFileCase, useDirective);
 		// Optional configuration changes
 		await globalConfigurationChangeHandler(vscode, event, context, initialEnabledOptions);
 	});

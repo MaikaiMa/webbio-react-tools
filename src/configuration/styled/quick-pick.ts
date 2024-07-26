@@ -1,29 +1,25 @@
 import * as vscode from "vscode";
 
 import { EXTENSION_KEY } from "../../constants/extension-key";
-import { CSS_MODULES_OPTION_KEY } from "./css-modules/constants";
 import { STYLED_COMPONENT_OPTION_KEY } from "./styled-component/constants";
-import { ElementOptions } from "../../constants/options.ts/index";
+import { TAILWIND_OPTION_KEY } from "./tailwind/constants";
+import { CSS_MODULES_OPTION_KEY } from "./css-modules/constants";
+import { ElementOptions } from "../../constants/element-options/index";
 
 const styledOptionQuickPick = async (): Promise<ElementOptions | undefined | null> => {
 	const styleOptions = [];
-
-	const useCssModules = await vscode.workspace
-		.getConfiguration(EXTENSION_KEY)
-		.get<boolean>(CSS_MODULES_OPTION_KEY);
 
 	const useStyledComponents = await vscode.workspace
 		.getConfiguration(EXTENSION_KEY)
 		.get<boolean>(STYLED_COMPONENT_OPTION_KEY);
 
-	if (useCssModules) {
-		styleOptions.push({
-			label: "CSS Module",
-			alwaysShow: true,
-			description: "Uses SCSS file as CSS module",
-			value: "css",
-		});
-	}
+	const useTailwindComponents = await vscode.workspace
+		.getConfiguration(EXTENSION_KEY)
+		.get<boolean>(TAILWIND_OPTION_KEY);
+
+	const useCssModules = await vscode.workspace
+		.getConfiguration(EXTENSION_KEY)
+		.get<boolean>(CSS_MODULES_OPTION_KEY);
 
 	if (useStyledComponents) {
 		styleOptions.push({
@@ -31,6 +27,24 @@ const styledOptionQuickPick = async (): Promise<ElementOptions | undefined | nul
 			alwaysShow: true,
 			description: "Use styled components styling file",
 			value: "sc",
+		});
+	}
+
+	if (useTailwindComponents) {
+		styleOptions.push({
+			label: "Tailwind",
+			alwaysShow: true,
+			description: "Use tailwind styling file",
+			value: "tw",
+		});
+	}
+
+	if (useCssModules) {
+		styleOptions.push({
+			label: "CSS Module",
+			alwaysShow: true,
+			description: "Uses SCSS file as CSS module",
+			value: "css",
 		});
 	}
 

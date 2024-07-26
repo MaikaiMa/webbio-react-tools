@@ -5,7 +5,11 @@
 		"outDir": "out",
 		"lib": ["es6"],
 		"sourceMap": true,
-		"rootDir": "."
+		"rootDir": ".",
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["src/*"]
+		}
 	},
 	"exclude": ["node_modules", ".vscode-test"]
 }

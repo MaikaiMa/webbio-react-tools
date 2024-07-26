@@ -8,7 +8,7 @@ export default (
 import clsx from 'clsx';
 import styles from './${fileName}.module.scss';
 
-export type ${componentName}Props = ${htmlType};
+export type ${componentName}Props = ${htmlType} & {};
 
 const ${componentName}: ReactComponent<${componentName}Props> = ({ className, ...rest }) => {
 	return (

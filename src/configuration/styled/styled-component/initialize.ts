@@ -1,11 +1,6 @@
 import * as vscode from "vscode";
-
-import {
-	STYLED_COMPONENT_OPTION_KEY,
-	STYLED_COMPONENT_SETTING_KEY,
-} from "./constants";
-
-import { EXTENSION_KEY } from "../../../constants/extension-key";
+import { EXTENSION_KEY } from "@/constants/extension-key";
+import { STYLED_COMPONENT_OPTION_KEY, STYLED_COMPONENT_SETTING_KEY } from "./constants";
 
 // Pass toplevel vscode object to avoid data mismatch
 const initialize = async (vsCode: typeof vscode): Promise<boolean> => {

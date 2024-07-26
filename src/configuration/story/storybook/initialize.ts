@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
+import { EXTENSION_KEY } from "@/constants/extension-key";
 import { STORYBOOK_OPTION_KEY, STORYBOOK_SETTING_KEY } from "./constants";
-import { EXTENSION_KEY } from "../../../constants/extension-key";
 
 // Pass toplevel vscode object to avoid data mismatch
 const initialize = async (vsCode: typeof vscode): Promise<boolean> => {

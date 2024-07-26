@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { handleCreateComponent } from "../../extension";
+import { handleCreateComponent } from "@/extension";
 
 const commands = [
 	vscode.commands.registerCommand("react-tools.create-styled-component", (args) => {

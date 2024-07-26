@@ -1,7 +1,6 @@
-import createFile from "../../../utils/create-file";
+import createFile from "@/utils/create-file";
 import storyFile from "./templates/story-file";
-
-import { STORY_FILE_EXTENSION } from "../../../constants/file-extensions";
+import { STORY_FILE_EXTENSION } from "@/constants/file-extensions";
 
 const createFiles = async (
 	directoryWithFileName: string,

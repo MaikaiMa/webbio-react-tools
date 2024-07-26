@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
-
+import { EXTENSION_KEY } from "@/constants/extension-key";
 import { CSS_MODULES_OPTION_KEY, CSS_MODULES_SETTING_KEY } from "./constants";
-import { EXTENSION_KEY } from "../../../constants/extension-key";
 
 // Pass toplevel vscode object to avoid data mismatch
 const onDidChangeCssModulesConfiguration = async (
