@@ -1,5 +1,6 @@
 export default (componentName: string, htmlType: string) => {
-	return `import { cn } from '~/lib/utils/cn';
+	return `import React from 'react';
+import { cn } from '~/lib/utils/cn';
 	
 export type ${componentName}Props = ${htmlType} & {};
 

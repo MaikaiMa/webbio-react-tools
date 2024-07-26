@@ -4,7 +4,7 @@
 	"description": "Webbio specific React tools and snippets",
 	"icon": "assets/logo.png",
 	"publisher": "Webbio",
-	"version": "2.0.1",
+	"version": "2.0.2",
 	"license": "MIT",
 	"repository": {
 		"url": "https://github.com/MaikaiMa/webbio-react-tools",
