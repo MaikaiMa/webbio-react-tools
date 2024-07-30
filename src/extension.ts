@@ -79,6 +79,8 @@ export const handleCreateComponent = async (args: any, styled?: boolean) => {
 			canPickMany: false,
 			placeHolder: "Select the file directive",
 		});
+	} else {
+		directive = DIRECTIVE_OPTIONS[0];
 	}
 
 	if (args) {

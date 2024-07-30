@@ -4,9 +4,19 @@ All notable changes to the "webbio-react-tools" extension will be documented in 
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [2.0.2] - 2024-07-26
+## [2.0.3] - 2024-07-26
 
 ### Changes
+
+- Adds default export to index files.
+
+### Fixes
+
+- Passes default (empty) directive option to prevent file creation error's.
+
+## [2.0.2] - 2024-07-26
+
+### Fixes
 
 - Fix import within Tailwind template.
 
